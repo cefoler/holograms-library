@@ -1,0 +1,50 @@
+allprojects {
+    apply plugin: 'java'
+
+    group 'com.cefoler'
+    version '1.0.0-SNAPSHOT'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    }
+
+    dependencies {
+        implementation 'com.google.guava:guava:31.0.1-jre'
+
+        def lombok = "org.projectlombok:lombok:1.18.22"
+        def annotations = "org.jetbrains:annotations:22.0.0"
+
+        compileOnly lombok, annotations
+        annotationProcessor lombok, annotations
+
+        def junitVersion = "5.8.2"
+
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    }
+
+    jar {
+        from 'LICENSE'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Jar) {
+        destinationDirectory.set(file("$rootDir/target/"))
+    }
+
+}

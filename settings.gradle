@@ -1,0 +1,5 @@
+rootProject.name = 'cefoler-boilerplate'
+
+include 'api'
+include 'bukkit'
+
