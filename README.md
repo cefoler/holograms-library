@@ -18,6 +18,7 @@ Note: This is a **experimental** project.
 
 ```java
     final Hologram hologram = AbstractHologram.builder()
+        .location(location)
         .addLines("This", "Is", "A", "Test")
         .addLine(new ItemStack(Material.STONE))
         .addPlaceholder("%player%", player -> player.getDisplayName())
