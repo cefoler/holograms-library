@@ -1,3 +1,6 @@
+[![](https://jitpack.io/v/cefoler/java-library.svg)](https://jitpack.io/#cefoler/holograms-library)
+
+
 # holograms-library
 Hologram Library for Spigot projects with support from 1.8 up to 1.18 using ProtocolLib as dependency.
 
