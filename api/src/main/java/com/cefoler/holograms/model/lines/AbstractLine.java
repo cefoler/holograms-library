@@ -1,15 +1,20 @@
 package com.cefoler.holograms.model.lines;
 
 import com.cefoler.holograms.exception.HologramException;
+import com.cefoler.holograms.model.animation.Animation;
+import com.cefoler.holograms.model.animation.type.AnimationType;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.cefoler.holograms.model.animation.AbstractAnimation;
-import com.cefoler.holograms.model.animation.type.AnimationType;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.UUID;
+import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,9 +26,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-
-public abstract class AbstractLine<T> implements Line, Serializable {
+public abstract class AbstractLine<T> implements Line<T>, Serializable {
 
   protected static final int VERSION;
   protected static final ProtocolManager MANAGER;
@@ -33,18 +36,15 @@ public abstract class AbstractLine<T> implements Line, Serializable {
     MANAGER = ProtocolLibrary.getProtocolManager();
   }
 
-  private final Plugin plugin;
   protected final int entityID;
-
+  private final Plugin plugin;
+  private final Collection<Player> animationPlayers;
   @Setter
   protected Location location;
-
+  @Getter
   @Setter
   protected T line;
-
-  protected Optional<AbstractAnimation> animation = Optional.empty();
-
-  private final Collection<Player> animationPlayers;
+  protected Optional<Animation> animation;
   private int taskID = -1;
 
   private WrappedDataWatcher defaultDataWatcher;
@@ -54,7 +54,8 @@ public abstract class AbstractLine<T> implements Line, Serializable {
     this.plugin = plugin;
     this.entityID = entityID;
     this.line = line;
-    this.animationPlayers = seeingPlayers; //copy rif
+    this.animationPlayers = seeingPlayers;
+    this.animation = Optional.empty();
 
     if (VERSION < 9) {
       this.defaultDataWatcher = getDefaultWatcher(Bukkit.getWorlds().get(0));
@@ -80,6 +81,7 @@ public abstract class AbstractLine<T> implements Line, Serializable {
     }
   }
 
+  @SuppressWarnings("deprecation")
   public void show(final @NotNull Player player) {
     try {
       final PacketContainer itemPacket = MANAGER.createPacket(
@@ -120,11 +122,10 @@ public abstract class AbstractLine<T> implements Line, Serializable {
   }
 
   public void setAnimation(final @NotNull AnimationType animationType) {
-    final AbstractAnimation abstractAnimation = animationType.getAnimation();
+    final Animation abstractAnimation = animationType.getAnimation();
     this.animation = Optional.of(abstractAnimation);
 
-    abstractAnimation.setEntityID(entityID);
-    abstractAnimation.setManager(MANAGER);
+    abstractAnimation.setEntityId(entityID);
 
     final BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin,
         () -> this.animationPlayers.forEach(abstractAnimation::nextFrame),

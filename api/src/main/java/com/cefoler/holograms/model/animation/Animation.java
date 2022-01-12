@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Animation {
 
+  void setEntityId(final int entityID);
+
   long getDelay();
 
   void nextFrame(@NotNull Player player);

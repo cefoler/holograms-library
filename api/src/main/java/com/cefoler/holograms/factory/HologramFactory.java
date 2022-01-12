@@ -1,7 +1,7 @@
 package com.cefoler.holograms.factory;
 
 import com.cefoler.holograms.controller.HologramController;
-import com.cefoler.holograms.model.hologram.AbstractHologram;
+import com.cefoler.holograms.model.hologram.Hologram;
 import com.cefoler.holograms.view.listener.HologramListener;
 import com.cefoler.holograms.view.task.AsyncUpdateTask;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public final class HologramFactory {
     FACTORY = new HologramFactory();
   }
 
-  private final List<AbstractHologram> holograms;
+  private final List<Hologram> holograms;
   private final AsyncUpdateTask asyncUpdateTask;
 
   private final HologramController controller;
@@ -34,16 +34,17 @@ public final class HologramFactory {
     this.controller = new HologramController(this);
   }
 
+  public static HologramFactory getFactory() {
+    return FACTORY;
+  }
+
   public void register(final Plugin plugin) {
     new HologramListener(plugin, this);
+    controller.startHologramTick();
   }
 
   public ScheduledExecutorService getScheduled() {
     return SCHEDULED;
-  }
-
-  public static HologramFactory getFactory() {
-    return FACTORY;
   }
 
 }

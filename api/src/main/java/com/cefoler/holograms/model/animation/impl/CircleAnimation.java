@@ -1,8 +1,8 @@
 package com.cefoler.holograms.model.animation.impl;
 
+import com.cefoler.holograms.model.animation.AbstractAnimation;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
-import com.cefoler.holograms.model.animation.AbstractAnimation;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +21,7 @@ public final class CircleAnimation extends AbstractAnimation {
     final PacketContainer container = new PacketContainer(PacketType.Play.Server.ENTITY_LOOK);
 
     container.getIntegers()
-        .write(0, entityID);
+        .write(0, entityId);
 
     container.getBytes()
         .write(0, (byte) getCompressedAngle(yaw))

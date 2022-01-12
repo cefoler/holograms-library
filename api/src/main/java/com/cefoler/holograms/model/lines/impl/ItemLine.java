@@ -1,26 +1,25 @@
 package com.cefoler.holograms.model.lines.impl;
 
 import com.cefoler.holograms.exception.HologramException;
+import com.cefoler.holograms.model.lines.AbstractLine;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.Pair;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.cefoler.holograms.model.lines.AbstractLine;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public final class ItemLine extends AbstractLine<ItemStack> {
 
   public ItemLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin,
-      final int entityID, final @NotNull ItemStack obj) {
-    super(seeingPlayers, plugin, entityID, obj);
+      final int entityID, final @NotNull ItemStack itemStack) {
+    super(seeingPlayers, plugin, entityID, itemStack);
   }
 
   @Override

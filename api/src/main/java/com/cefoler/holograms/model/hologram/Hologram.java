@@ -1,8 +1,8 @@
 package com.cefoler.holograms.model.hologram;
 
-import com.cefoler.holograms.model.animation.type.AnimationType;
-import com.cefoler.holograms.model.lines.AbstractLine;
 import com.cefoler.holograms.model.PlaceholderRegistry;
+import com.cefoler.holograms.model.animation.type.AnimationType;
+import com.cefoler.holograms.model.lines.Line;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ public interface Hologram {
 
   Location getLocation();
 
-  AbstractLine<?>[] getLines();
+  Line<?>[] getLines();
 
   List<Player> getVisibleTo();
 
@@ -31,7 +31,7 @@ public interface Hologram {
 
   void hide(@NotNull Player player);
 
-  AbstractLine<?> getLine(int index);
+  Line<?> getLine(int index);
 
   boolean isShownFor(@NotNull Player player);
 

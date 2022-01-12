@@ -1,24 +1,24 @@
 package com.cefoler.holograms.model.lines.impl;
 
 import com.cefoler.holograms.exception.HologramException;
+import com.cefoler.holograms.model.PlaceholderRegistry;
 import com.cefoler.holograms.model.lines.AbstractLine;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.cefoler.holograms.model.PlaceholderRegistry;
+import java.util.Collection;
+import java.util.Optional;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.Optional;
 
 public final class TextLine extends AbstractLine<String> {
 
   private final PlaceholderRegistry placeholders;
 
-  public TextLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin, final int entityID,
+  public TextLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin,
+      final int entityID,
       final @NotNull String obj, final @NotNull PlaceholderRegistry placeholderRegistry) {
     super(seeingPlayers, plugin, entityID, obj);
     this.placeholders = placeholderRegistry;
@@ -84,7 +84,8 @@ public final class TextLine extends AbstractLine<String> {
           .of(WrappedChatComponent
               .fromChatMessage(placeholders.parse(line, player))[0].getHandle());
 
-      final WrappedDataWatcher.WrappedDataWatcherObject wrappedData = new WrappedDataWatcher.WrappedDataWatcherObject(2,
+      final WrappedDataWatcher.WrappedDataWatcherObject wrappedData = new WrappedDataWatcher.WrappedDataWatcherObject(
+          2,
           WrappedDataWatcher.Registry.getChatComponentSerializer(true));
 
       watcher.setObject(wrappedData, opt);
