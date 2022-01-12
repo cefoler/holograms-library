@@ -1,4 +1,4 @@
-package com.cefoler.holograms.factory;
+package com.cefoler.holograms;
 
 import com.cefoler.holograms.controller.HologramController;
 import com.cefoler.holograms.model.hologram.Hologram;
@@ -8,43 +8,62 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import lombok.AccessLevel;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
-@Getter
-public final class HologramFactory {
+@Getter(AccessLevel.PUBLIC)
+public final class HologramCore implements HologramApi {
 
-  private static final HologramFactory FACTORY;
+  private static final HologramApi API;
   private static final ScheduledExecutorService SCHEDULED;
 
   static {
     SCHEDULED = Executors.newScheduledThreadPool(1);
-    FACTORY = new HologramFactory();
+    API = new HologramCore();
   }
 
   private final List<Hologram> holograms;
   private final AsyncUpdateTask asyncUpdateTask;
 
+  @Getter(AccessLevel.PRIVATE)
   private final HologramController controller;
 
-  public HologramFactory() {
+  public HologramCore() {
     this.holograms = new ArrayList<>(0);
     this.asyncUpdateTask = new AsyncUpdateTask(this);
 
     this.controller = new HologramController(this);
   }
 
-  public static HologramFactory getFactory() {
-    return FACTORY;
-  }
-
+  @Override
   public void register(final Plugin plugin) {
     new HologramListener(plugin, this);
     controller.startHologramTick();
   }
 
+  @Override
+  public void registerHologram(final @NotNull Hologram hologram) {
+    controller.register(hologram);
+  }
+
+  @Override
+  public void removeHologram(final @NotNull Hologram hologram) {
+    controller.remove(hologram);
+  }
+
+  public void handle(final Player player, final Hologram hologram) {
+    controller.handle(player, hologram);
+  }
+
   public ScheduledExecutorService getScheduled() {
     return SCHEDULED;
+  }
+
+  public static HologramApi getApi() {
+    return API;
   }
 
 }

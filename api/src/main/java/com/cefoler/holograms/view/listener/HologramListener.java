@@ -1,6 +1,6 @@
 package com.cefoler.holograms.view.listener;
 
-import com.cefoler.holograms.factory.HologramFactory;
+import com.cefoler.holograms.HologramCore;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,9 +18,9 @@ public final class HologramListener implements Listener {
     REGISTERED = false;
   }
 
-  private final HologramFactory factory;
+  private final HologramCore factory;
 
-  public HologramListener(final @NotNull Plugin plugin, final HologramFactory hologramFactory) {
+  public HologramListener(final @NotNull Plugin plugin, final HologramCore hologramFactory) {
     this.factory = hologramFactory;
 
     if (!REGISTERED) {

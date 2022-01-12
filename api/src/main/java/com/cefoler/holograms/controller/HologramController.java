@@ -1,21 +1,27 @@
 package com.cefoler.holograms.controller;
 
-import com.cefoler.holograms.factory.HologramFactory;
+import com.cefoler.holograms.HologramCore;
 import com.cefoler.holograms.model.hologram.Hologram;
 import java.util.concurrent.TimeUnit;
 import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
+@Internal
 @AllArgsConstructor
 public final class HologramController {
 
-  private final HologramFactory factory;
+  private final HologramCore factory;
 
   public void register(final @NotNull Hologram hologram) {
     factory.getHolograms().add(hologram);
+  }
+
+  public void remove(final @NotNull Hologram hologram) {
+    factory.getHolograms().remove(hologram);
   }
 
   public void startHologramTick() {

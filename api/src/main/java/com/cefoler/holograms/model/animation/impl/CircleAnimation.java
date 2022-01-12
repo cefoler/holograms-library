@@ -9,14 +9,8 @@ import org.jetbrains.annotations.NotNull;
 public final class CircleAnimation extends AbstractAnimation {
 
   private float yaw = 0;
-
   @Override
-  public long getDelay() {
-    return 2;
-  }
-
-  @Override
-  public void nextFrame(@NotNull Player player) {
+  public void nextFrame(final @NotNull Player player) {
     this.yaw += 10L;
     final PacketContainer container = new PacketContainer(PacketType.Play.Server.ENTITY_LOOK);
 
@@ -31,6 +25,11 @@ public final class CircleAnimation extends AbstractAnimation {
         .write(0, true);
 
     sendPacket(player, container);
+  }
+
+  @Override
+  public long getDelay() {
+    return 2;
   }
 
   private int getCompressedAngle(final float value) {
