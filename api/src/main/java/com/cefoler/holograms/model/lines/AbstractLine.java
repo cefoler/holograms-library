@@ -9,6 +9,7 @@ import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import com.cefoler.holograms.model.animation.AbstractAnimation;
 import com.cefoler.holograms.model.animation.type.AnimationType;
+import java.io.Serializable;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public abstract class AbstractLine<T> {
+public abstract class AbstractLine<T> implements Line, Serializable {
 
   protected static final int VERSION;
   protected static final ProtocolManager MANAGER;
@@ -119,7 +120,7 @@ public abstract class AbstractLine<T> {
   }
 
   public void setAnimation(final @NotNull AnimationType animationType) {
-    final AbstractAnimation abstractAnimation = animationType.cloned();
+    final AbstractAnimation abstractAnimation = animationType.getAnimation();
     this.animation = Optional.of(abstractAnimation);
 
     abstractAnimation.setEntityID(entityID);
@@ -127,7 +128,7 @@ public abstract class AbstractLine<T> {
 
     final BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin,
         () -> this.animationPlayers.forEach(abstractAnimation::nextFrame),
-        abstractAnimation.delay(), abstractAnimation.delay());
+        abstractAnimation.getDelay(), abstractAnimation.getDelay());
     this.taskID = task.getTaskId();
   }
 

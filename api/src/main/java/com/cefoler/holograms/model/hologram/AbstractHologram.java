@@ -1,13 +1,17 @@
 package com.cefoler.holograms.model.hologram;
 
-import com.cefoler.holograms.model.Placeholders;
+import com.cefoler.holograms.exception.HologramException;
+import com.cefoler.holograms.factory.HologramFactory;
+import com.cefoler.holograms.model.PlaceholderRegistry;
 import com.cefoler.holograms.model.animation.type.AnimationType;
+import com.cefoler.holograms.model.hologram.impl.StandardHologram;
 import com.cefoler.holograms.model.lines.AbstractLine;
 import com.cefoler.holograms.model.lines.impl.ItemLine;
 import com.cefoler.holograms.model.lines.impl.TextLine;
-import com.cefoler.holograms.view.listener.HologramListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -20,7 +24,7 @@ import java.util.concurrent.*;
 import java.util.function.Function;
 
 @Getter
-public abstract class AbstractHologram implements Hologram {
+public abstract class AbstractHologram implements Hologram, Serializable {
 
   private static final ThreadLocalRandom RANDOM;
 
@@ -28,24 +32,23 @@ public abstract class AbstractHologram implements Hologram {
     RANDOM = ThreadLocalRandom.current();
   }
 
-  private final Plugin plugin;
   private final Location location;
 
   protected final AbstractLine<?>[] lines;
   private final List<Player> visibleTo;
 
-  private final Placeholders placeholders;
+  private final PlaceholderRegistry placeholders;
 
   public AbstractHologram(
       final @NotNull Plugin plugin,
       final @NotNull Location location,
-      final @Nullable Placeholders placeholders,
+      final @Nullable PlaceholderRegistry placeholderRegistry,
       final @NotNull List<Player> visibleTo,
       final @NotNull Object... lines
   ) {
-    this.plugin = plugin;
     this.location = location;
-    this.placeholders = placeholders == null ? new Placeholders() : placeholders;
+    this.placeholders = placeholderRegistry
+        == null ? new PlaceholderRegistry() : placeholderRegistry;
     this.visibleTo = visibleTo;
     this.lines = new AbstractLine[lines.length];
 
@@ -58,7 +61,8 @@ public abstract class AbstractHologram implements Hologram {
         : 0.28D;
 
       if (line instanceof String) {
-        final AbstractLine<?> tempLine = new TextLine(visibleTo, plugin, RANDOM.nextInt(), (String) line, placeholders);
+        final AbstractLine<?> tempLine = new TextLine(visibleTo, plugin, RANDOM.nextInt(), (String) line,
+            placeholderRegistry);
         tempLine.setLocation(cloned.add(0.0, up, 0).clone());
 
         this.lines[count++] = tempLine;
@@ -131,11 +135,11 @@ public abstract class AbstractHologram implements Hologram {
     private Location location;
 
     private final ConcurrentLinkedDeque<Object> lines;
-    private final Placeholders placeholders;
+    private final PlaceholderRegistry placeholderRegistry;
 
     {
       lines = new ConcurrentLinkedDeque<>();
-      placeholders = new Placeholders();
+      placeholderRegistry = new PlaceholderRegistry();
     }
 
     @NotNull
@@ -176,20 +180,26 @@ public abstract class AbstractHologram implements Hologram {
 
     @NotNull
     public Builder addPlaceholder(final @NotNull String key, final @NotNull Function<Player, String> result) {
-      this.placeholders.add(key, result);
+      placeholderRegistry.add(key, result);
       return this;
     }
 
     @NotNull
-    public AbstractHologram build(final @NotNull HologramListener pool) {
+    public Builder addPlaceholders(final Map<String, Function<Player, String>> result) {
+      placeholderRegistry.add(result);
+      return this;
+    }
+
+    @NotNull
+    public AbstractHologram build(final Plugin plugin) {
       if (location == null || lines.isEmpty()) {
-        throw new IllegalArgumentException("No location given or not completed");
+        throw new HologramException("No location given or not completed");
       }
 
-      final AbstractHologram hologram = new HologramImpl(pool.getPlugin(), location,
-          placeholders, new ArrayList<>(), lines.toArray());
+      final AbstractHologram hologram = new StandardHologram(plugin, location,
+          placeholderRegistry, new ArrayList<>(), lines.toArray());
 
-      pool.takeCareOf(hologram);
+      HologramFactory.getFactory().getController().register(hologram);
       return hologram;
     }
   }

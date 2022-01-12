@@ -6,7 +6,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.cefoler.holograms.model.Placeholders;
+import com.cefoler.holograms.model.PlaceholderRegistry;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -16,19 +16,18 @@ import java.util.Optional;
 
 public final class TextLine extends AbstractLine<String> {
 
-  private final Placeholders placeholders;
+  private final PlaceholderRegistry placeholders;
 
   public TextLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin, final int entityID,
-      final @NotNull String obj, final @NotNull Placeholders placeholders) {
+      final @NotNull String obj, final @NotNull PlaceholderRegistry placeholderRegistry) {
     super(seeingPlayers, plugin, entityID, obj);
-    this.placeholders = placeholders;
+    this.placeholders = placeholderRegistry;
   }
 
   @Override
   public void show(final @NotNull Player player) {
+    super.show(player);
     try {
-      super.show(player);
-
       final PacketContainer packet = MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
       packet.getIntegers().write(0, entityID);
 

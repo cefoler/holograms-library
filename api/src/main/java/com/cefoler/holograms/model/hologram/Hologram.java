@@ -2,7 +2,7 @@ package com.cefoler.holograms.model.hologram;
 
 import com.cefoler.holograms.model.animation.type.AnimationType;
 import com.cefoler.holograms.model.lines.AbstractLine;
-import com.cefoler.holograms.model.Placeholders;
+import com.cefoler.holograms.model.PlaceholderRegistry;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ public interface Hologram {
 
   List<Player> getVisibleTo();
 
-  Placeholders getPlaceholders();
+  PlaceholderRegistry getPlaceholders();
 
   void setLine(int index, @NotNull ItemStack itemStack);
 

@@ -8,11 +8,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public final class Placeholders {
+public final class PlaceholderRegistry {
 
     private final Map<String, Function<Player, String>> placeholders;
 
-    public Placeholders() {
+    public PlaceholderRegistry() {
         this.placeholders = new ConcurrentHashMap<>();
     }
 

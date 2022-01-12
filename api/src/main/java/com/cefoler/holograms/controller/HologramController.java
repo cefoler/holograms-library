@@ -11,7 +11,7 @@ public final class HologramController {
 
   private final HologramFactory factory;
 
-  public void takeCareOf(final @NotNull AbstractHologram hologram) {
+  public void register(final @NotNull AbstractHologram hologram) {
     factory.getHolograms().add(hologram);
   }
 

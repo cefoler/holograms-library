@@ -25,6 +25,7 @@ public final class ItemLine extends AbstractLine<ItemStack> {
 
   @Override
   public void show(final @NotNull Player player) {
+    super.show(player);
     try {
       final PacketContainer container = MANAGER.createPacket(
           PacketType.Play.Server.ENTITY_METADATA);
