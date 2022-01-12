@@ -2,8 +2,7 @@ package com.cefoler.holograms.exception;
 
 public final class HologramException extends RuntimeException {
 
-  public HologramException() {
-  }
+  public HologramException() {}
 
   public HologramException(final String message) {
     super(message);

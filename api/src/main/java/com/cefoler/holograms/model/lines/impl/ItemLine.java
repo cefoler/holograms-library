@@ -64,6 +64,7 @@ public final class ItemLine extends AbstractLine<ItemStack> {
 
         packet.getSlotStackPairLists().write(0, pairList);
         MANAGER.sendServerPacket(player, packet);
+        return;
       }
 
       packet.getIntegers()

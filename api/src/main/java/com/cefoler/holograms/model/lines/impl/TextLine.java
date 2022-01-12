@@ -7,6 +7,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import java.util.Collection;
 import java.util.Optional;
 import org.bukkit.entity.Player;
@@ -40,17 +41,19 @@ public final class TextLine extends AbstractLine<String> {
 
         packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
         MANAGER.sendServerPacket(player, packet);
+        return;
       }
 
       final WrappedDataWatcher.WrappedDataWatcherObject visible = new WrappedDataWatcher.WrappedDataWatcherObject(
           0, WrappedDataWatcher.Registry.get(Byte.class));
       watcher.setObject(visible, (byte) 0x20);
 
-      final Optional<?> opt = Optional
-          .of(WrappedChatComponent
-              .fromChatMessage(placeholders.parse(this.line, player))[0].getHandle());
-      watcher.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(2,
-          WrappedDataWatcher.Registry.getChatComponentSerializer(true)), opt);
+      final WrappedChatComponent chatComponent = WrappedChatComponent
+          .fromChatMessage(placeholders.parse(line, player))[0];
+
+      final WrappedDataWatcherObject watcherObject = new WrappedDataWatcher.WrappedDataWatcherObject(
+          2, WrappedDataWatcher.Registry.getChatComponentSerializer(true));
+      watcher.setObject(watcherObject, Optional.of(chatComponent.getHandle()));
 
       final WrappedDataWatcher.WrappedDataWatcherObject nameVisible = new WrappedDataWatcher.WrappedDataWatcherObject(
           3, WrappedDataWatcher.Registry.get(Boolean.class));
@@ -80,15 +83,13 @@ public final class TextLine extends AbstractLine<String> {
         return;
       }
 
-      final Optional<?> opt = Optional
-          .of(WrappedChatComponent
-              .fromChatMessage(placeholders.parse(line, player))[0].getHandle());
+      final WrappedChatComponent component = WrappedChatComponent.fromChatMessage(
+          placeholders.parse(line, player))[0];
 
       final WrappedDataWatcher.WrappedDataWatcherObject wrappedData = new WrappedDataWatcher.WrappedDataWatcherObject(
-          2,
-          WrappedDataWatcher.Registry.getChatComponentSerializer(true));
+          2, WrappedDataWatcher.Registry.getChatComponentSerializer(true));
 
-      watcher.setObject(wrappedData, opt);
+      watcher.setObject(wrappedData, Optional.of(component.getHandle()));
 
       packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
       MANAGER.sendServerPacket(player, packet);

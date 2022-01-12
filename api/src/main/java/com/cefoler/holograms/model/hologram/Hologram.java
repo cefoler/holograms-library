@@ -19,20 +19,20 @@ public interface Hologram {
 
   PlaceholderRegistry getPlaceholders();
 
-  void setLine(int index, @NotNull ItemStack itemStack);
+  void setLine(final int index, final @NotNull ItemStack itemStack);
 
-  void setLine(int index, @NotNull String text);
+  void setLine(final int index, final @NotNull String text);
 
-  void setAnimation(int index, @NotNull AnimationType animationType);
+  void setAnimation(final int index, final @NotNull AnimationType animationType);
 
-  void removeAnimation(int index);
+  void removeAnimation(final int index);
 
-  void show(@NotNull Player player);
+  void show(final @NotNull Player player);
 
-  void hide(@NotNull Player player);
+  void hide(final @NotNull Player player);
 
-  Line<?> getLine(int index);
+  Line<?> getLine(final int index);
 
-  boolean isVisible(@NotNull Player player);
+  boolean isVisible(final @NotNull Player player);
 
 }

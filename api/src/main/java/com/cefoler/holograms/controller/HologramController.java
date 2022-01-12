@@ -31,7 +31,6 @@ public final class HologramController {
 
   public void handle(final Player player, final Hologram hologram) {
     final Location hologramLocation = hologram.getLocation();
-    final Location playerLocation = player.getLocation();
 
     final boolean isShown = hologram.isVisible(player);
 
@@ -51,7 +50,7 @@ public final class HologramController {
     }
 
     // TODO: see how to optimize the distance squared method
-    final boolean inRange = hologramLocation.distanceSquared(playerLocation) <= 5;
+    final boolean inRange = hologramLocation.distanceSquared(player.getLocation()) <= 5;
     if (!inRange && isShown) {
       hologram.hide(player);
       return;

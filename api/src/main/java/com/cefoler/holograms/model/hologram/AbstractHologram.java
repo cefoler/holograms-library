@@ -52,7 +52,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     this.visiblePlayers = visiblePlayers;
     this.lines = new AbstractLine[lines.length];
 
-    final Location cloned = location.clone().subtract(0, 0.28, 0);
+    final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
 
     int count = 0;
     for (final Object line : lines) {
@@ -61,11 +61,11 @@ public abstract class AbstractHologram implements Hologram, Serializable {
           : 0.28D;
 
       if (line instanceof String) {
-        final Line<?> tempLine = new TextLine(visiblePlayers, plugin, RANDOM.nextInt(), (String) line,
+        final Line<?> textLine = new TextLine(visiblePlayers, plugin, RANDOM.nextInt(), (String) line,
             this.placeholders);
-        tempLine.setLocation(cloned.add(0.0, up, 0).clone());
+        textLine.setLocation(hologramLocation.add(0.0, up, 0).clone());
 
-        this.lines[count++] = tempLine;
+        this.lines[count++] = textLine;
         return;
       }
 
@@ -73,16 +73,11 @@ public abstract class AbstractHologram implements Hologram, Serializable {
         return;
       }
 
-      final Line<?> tempLine = new ItemLine(visiblePlayers, plugin, RANDOM.nextInt(), (ItemStack) line);
-      tempLine.setLocation(cloned.add(0.0, 0.60D, 0).clone());
+      final Line<?> itemLine = new ItemLine(visiblePlayers, plugin, RANDOM.nextInt(), (ItemStack) line);
+      itemLine.setLocation(hologramLocation.add(0.0, 0.60D, 0).clone());
 
-      this.lines[count++] = tempLine;
+      this.lines[count++] = itemLine;
     }
-  }
-
-  @NotNull
-  public static Builder builder() {
-    return new Builder();
   }
 
   public void setLine(final int index, final @NotNull ItemStack itemStack) {
@@ -128,6 +123,11 @@ public abstract class AbstractHologram implements Hologram, Serializable {
 
   public boolean isVisible(final @NotNull Player player) {
     return visiblePlayers.contains(player);
+  }
+
+  @NotNull
+  public static Builder builder() {
+    return new Builder();
   }
 
   public static class Builder {

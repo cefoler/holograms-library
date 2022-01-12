@@ -9,6 +9,6 @@ public interface Animation {
 
   long getDelay();
 
-  void nextFrame(@NotNull Player player);
+  void nextFrame(final @NotNull Player player);
 
 }

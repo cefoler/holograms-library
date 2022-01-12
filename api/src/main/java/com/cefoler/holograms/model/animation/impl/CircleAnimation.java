@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 public final class CircleAnimation extends AbstractAnimation {
 
-  private float yaw = 0;
+  private float yaw;
+
   @Override
   public void nextFrame(final @NotNull Player player) {
     this.yaw += 10L;

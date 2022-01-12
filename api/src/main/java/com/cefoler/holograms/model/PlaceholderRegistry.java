@@ -1,5 +1,6 @@
 package com.cefoler.holograms.model;
 
+import com.celeste.library.spigot.util.message.hex.RgbUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,8 +27,10 @@ public final class PlaceholderRegistry {
   @NotNull
   public String parse(@NotNull String line, @NotNull Player player) {
     final AtomicReference<String> clonedLine = new AtomicReference<>(line);
-    placeholders.forEach(
-        (key, value) -> clonedLine.set(clonedLine.get().replaceAll(key, value.apply(player))));
+    placeholders.forEach((key, value) -> {
+          final String parsed = clonedLine.get().replaceAll(key, value.apply(player));
+          clonedLine.set(RgbUtils.process(parsed));
+        });
 
     return clonedLine.get();
   }

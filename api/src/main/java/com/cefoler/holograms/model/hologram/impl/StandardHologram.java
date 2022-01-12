@@ -11,11 +11,11 @@ import org.jetbrains.annotations.Nullable;
 
 public final class StandardHologram extends AbstractHologram {
 
-  public StandardHologram(@NotNull final Plugin plugin,
-      @NotNull final Location location,
-      @Nullable final PlaceholderRegistry placeholders,
-      @NotNull final List<Player> seeingPlayers,
-      @NotNull final Object... lines) {
+  public StandardHologram(final @NotNull Plugin plugin,
+      final @NotNull Location location,
+      final @Nullable PlaceholderRegistry placeholders,
+      final @NotNull List<Player> seeingPlayers,
+      final @NotNull Object... lines) {
     super(plugin, location, placeholders, seeingPlayers, lines);
   }
 

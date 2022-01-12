@@ -28,6 +28,8 @@ allprojects {
 
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+
+        implementation 'com.github.cefoler.java-library:spigot:c9c57fc553'
     }
 
     jar {

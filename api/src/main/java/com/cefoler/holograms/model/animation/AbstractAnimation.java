@@ -24,7 +24,7 @@ public abstract class AbstractAnimation implements Animation, Serializable {
 
   public abstract long getDelay();
 
-  public abstract void nextFrame(@NotNull Player player);
+  public abstract void nextFrame(final @NotNull Player player);
 
   public void sendPacket(final Player player, final PacketContainer container) {
     try {
