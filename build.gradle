@@ -1,5 +1,6 @@
 allprojects {
-    apply plugin: 'java'
+    apply plugin: "java"
+    apply plugin: "maven-publish"
 
     group 'com.cefoler'
     version '1.0.0-SNAPSHOT'
@@ -43,6 +44,14 @@ allprojects {
 
     tasks.withType(Jar) {
         destinationDirectory.set(file("$rootDir/target/"))
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
     }
 
 }
