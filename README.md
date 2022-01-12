@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/cefoler/java-library.svg)](https://jitpack.io/#cefoler/holograms-library)
+[![](https://jitpack.io/v/cefoler/holograms-library.svg)](https://jitpack.io/#cefoler/holograms-library)
 
 
 # holograms-library
