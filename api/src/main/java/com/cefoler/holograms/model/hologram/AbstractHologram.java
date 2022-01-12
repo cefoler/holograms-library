@@ -126,7 +126,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     return lines[Math.abs(index - lines.length + 1)];
   }
 
-  public boolean isShownFor(final @NotNull Player player) {
+  public boolean isVisible(final @NotNull Player player) {
     return visibleTo.contains(player);
   }
 

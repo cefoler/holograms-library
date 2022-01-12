@@ -33,7 +33,7 @@ public final class HologramListener implements Listener {
   public void onRespawn(final PlayerRespawnEvent event) {
     final Player player = event.getPlayer();
     factory.getHolograms().stream()
-        .filter(hologram -> hologram.isShownFor(player))
+        .filter(hologram -> hologram.isVisible(player))
         .forEach(hologram -> hologram.hide(player));
   }
 
@@ -41,7 +41,7 @@ public final class HologramListener implements Listener {
   public void onQuit(final PlayerQuitEvent event) {
     final Player player = event.getPlayer();
     factory.getHolograms().stream()
-        .filter(hologram -> hologram.isShownFor(player))
+        .filter(hologram -> hologram.isVisible(player))
         .forEach(hologram -> hologram.hide(player));
   }
 

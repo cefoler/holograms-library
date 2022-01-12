@@ -27,7 +27,7 @@ public final class HologramController {
     final Location hologramLocation = hologram.getLocation();
     final Location playerLocation = player.getLocation();
 
-    final boolean isShown = hologram.isShownFor(player);
+    final boolean isShown = hologram.isVisible(player);
 
     final World hologramWorld = hologramLocation.getWorld();
     final World playerWorld = player.getWorld();

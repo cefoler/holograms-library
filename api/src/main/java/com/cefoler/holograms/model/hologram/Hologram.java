@@ -15,7 +15,7 @@ public interface Hologram {
 
   Line<?>[] getLines();
 
-  List<Player> getVisibleTo();
+  List<Player> getVisiblePlayers();
 
   PlaceholderRegistry getPlaceholders();
 
@@ -33,6 +33,6 @@ public interface Hologram {
 
   Line<?> getLine(int index);
 
-  boolean isShownFor(@NotNull Player player);
+  boolean isVisible(@NotNull Player player);
 
 }
