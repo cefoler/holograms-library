@@ -38,10 +38,10 @@ Note: This is a **experimental** project.
     });
 ```
 
-### Registering the Hologram 
+### Registering the Hologram architecture
 
-This is necessary for the hologram to work. It should be used after onLoad, the recomendation is to use it after you loaded your listeners.
+This is necessary for the holograms to work. It should be used after onLoad, the recomendation is to use it after you loaded your listeners.
 
 ```java
-HologramFactory.getFactory().register(plugin);
+HologramApi.getApi().register(plugin);
 ```
