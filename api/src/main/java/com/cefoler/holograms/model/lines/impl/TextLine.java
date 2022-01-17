@@ -19,9 +19,9 @@ public final class TextLine extends AbstractLine<String> {
   private final PlaceholderRegistry placeholders;
 
   public TextLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin,
-      final int entityID,
+      final int hologramId,
       final @NotNull String obj, final @NotNull PlaceholderRegistry placeholderRegistry) {
-    super(seeingPlayers, plugin, entityID, obj);
+    super(seeingPlayers, plugin, hologramId, obj);
     this.placeholders = placeholderRegistry;
   }
 
@@ -30,7 +30,8 @@ public final class TextLine extends AbstractLine<String> {
     super.show(player);
     try {
       final PacketContainer packet = MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
-      packet.getIntegers().write(0, entityID);
+      packet.getIntegers()
+          .write(0, entityID);
 
       final WrappedDataWatcher watcher = new WrappedDataWatcher();
 
@@ -48,19 +49,14 @@ public final class TextLine extends AbstractLine<String> {
           0, WrappedDataWatcher.Registry.get(Byte.class));
       watcher.setObject(visible, (byte) 0x20);
 
-      final WrappedChatComponent chatComponent = WrappedChatComponent
-          .fromChatMessage(placeholders.parse(line, player))[0];
-
-      final WrappedDataWatcherObject watcherObject = new WrappedDataWatcher.WrappedDataWatcherObject(
-          2, WrappedDataWatcher.Registry.getChatComponentSerializer(true));
-      watcher.setObject(watcherObject, Optional.of(chatComponent.getHandle()));
-
       final WrappedDataWatcher.WrappedDataWatcherObject nameVisible = new WrappedDataWatcher.WrappedDataWatcherObject(
           3, WrappedDataWatcher.Registry.get(Boolean.class));
       watcher.setObject(nameVisible, true);
 
       packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
       MANAGER.sendServerPacket(player, packet);
+
+      update(player);
     } catch (Exception exception) {
       throw new HologramException(
           "Unable to show hologram to player. Exception: " + exception.getMessage());
@@ -83,13 +79,13 @@ public final class TextLine extends AbstractLine<String> {
         return;
       }
 
-      final WrappedChatComponent component = WrappedChatComponent.fromChatMessage(
+      final WrappedChatComponent chatComponent = WrappedChatComponent.fromChatMessage(
           placeholders.parse(line, player))[0];
 
-      final WrappedDataWatcher.WrappedDataWatcherObject wrappedData = new WrappedDataWatcher.WrappedDataWatcherObject(
+      final WrappedDataWatcher.WrappedDataWatcherObject chatComponentSerializer = new WrappedDataWatcher.WrappedDataWatcherObject(
           2, WrappedDataWatcher.Registry.getChatComponentSerializer(true));
 
-      watcher.setObject(wrappedData, Optional.of(component.getHandle()));
+      watcher.setObject(chatComponentSerializer, chatComponent.getHandle());
 
       packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
       MANAGER.sendServerPacket(player, packet);

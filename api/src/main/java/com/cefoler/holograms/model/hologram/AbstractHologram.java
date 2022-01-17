@@ -5,15 +5,15 @@ import com.cefoler.holograms.HologramCore;
 import com.cefoler.holograms.model.PlaceholderRegistry;
 import com.cefoler.holograms.model.animation.type.AnimationType;
 import com.cefoler.holograms.model.hologram.impl.StandardHologram;
-import com.cefoler.holograms.model.lines.AbstractLine;
 import com.cefoler.holograms.model.lines.Line;
 import com.cefoler.holograms.model.lines.impl.ItemLine;
 import com.cefoler.holograms.model.lines.impl.TextLine;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     RANDOM = ThreadLocalRandom.current();
   }
 
-  protected final Line<?>[] lines;
+  protected final List<Line<?>> lines;
   private final Location location;
   private final List<Player> visiblePlayers;
 
@@ -50,11 +50,10 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     this.placeholders = placeholderRegistry
         == null ? new PlaceholderRegistry() : placeholderRegistry;
     this.visiblePlayers = visiblePlayers;
-    this.lines = new AbstractLine[lines.length];
+    this.lines = new ArrayList<>(lines.length);
 
     final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
 
-    int count = 0;
     for (final Object line : lines) {
       final double up = line instanceof ItemStack
           ? 0.0D
@@ -65,7 +64,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
             this.placeholders);
         textLine.setLocation(hologramLocation.add(0.0, up, 0).clone());
 
-        this.lines[count++] = textLine;
+        this.lines.add(textLine);
         return;
       }
 
@@ -76,7 +75,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
       final Line<?> itemLine = new ItemLine(visiblePlayers, plugin, RANDOM.nextInt(), (ItemStack) line);
       itemLine.setLocation(hologramLocation.add(0.0, 0.60D, 0).clone());
 
-      this.lines[count++] = itemLine;
+      this.lines.add(itemLine);
     }
   }
 
@@ -118,7 +117,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
   }
 
   public Line<?> getLine(final int index) {
-    return lines[Math.abs(index - lines.length + 1)];
+    return lines.get(Math.abs(index - lines.size() + 1));
   }
 
   public boolean isVisible(final @NotNull Player player) {
@@ -132,42 +131,36 @@ public abstract class AbstractHologram implements Hologram, Serializable {
 
   public static class Builder {
 
-    private final ConcurrentLinkedDeque<Object> lines;
+    private final LinkedList<Object> lines;
     private final PlaceholderRegistry placeholderRegistry;
     private Location location;
 
     {
-      lines = new ConcurrentLinkedDeque<>();
+      lines = new LinkedList<>();
       placeholderRegistry = new PlaceholderRegistry();
     }
 
     @NotNull
     public Builder addLine(final @NotNull String line) {
-      lines.addFirst(line);
+      lines.add(line);
       return this;
     }
 
     @NotNull
     public Builder addLines(final @NotNull String... linesString) {
-      for (final String s : linesString) {
-        lines.addFirst(s);
-      }
-
+      lines.addAll(Arrays.asList(linesString));
       return this;
     }
 
     @NotNull
     public Builder addLine(final @NotNull ItemStack item) {
-      lines.addFirst(item);
+      lines.add(item);
       return this;
     }
 
     @NotNull
     public Builder addLines(final @NotNull ItemStack... items) {
-      for (final ItemStack item : items) {
-        lines.addFirst(item);
-      }
-
+      lines.addAll(Arrays.asList(items));
       return this;
     }
 

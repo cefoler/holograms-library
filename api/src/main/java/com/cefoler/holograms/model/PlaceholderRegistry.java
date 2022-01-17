@@ -28,9 +28,9 @@ public final class PlaceholderRegistry {
   public String parse(@NotNull String line, @NotNull Player player) {
     final AtomicReference<String> clonedLine = new AtomicReference<>(line);
     placeholders.forEach((key, value) -> {
-          final String parsed = clonedLine.get().replaceAll(key, value.apply(player));
-          clonedLine.set(RgbUtils.process(parsed));
-        });
+      final String parsed = clonedLine.get().replaceAll(key, value.apply(player));
+      clonedLine.set(RgbUtils.process(parsed));
+    });
 
     return clonedLine.get();
   }
