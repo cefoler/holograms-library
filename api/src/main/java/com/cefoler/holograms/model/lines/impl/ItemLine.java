@@ -1,14 +1,18 @@
 package com.cefoler.holograms.model.lines.impl;
 
+import static com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
+import static com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
+
 import com.cefoler.holograms.exception.HologramException;
 import com.cefoler.holograms.model.lines.AbstractLine;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.EnumWrappers.ItemSlot;
 import com.comphenix.protocol.wrappers.Pair;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,8 +39,8 @@ public final class ItemLine extends AbstractLine<ItemStack> {
       if (VERSION < 9) {
         watcher.setObject(0, (byte) 0x20);
       } else {
-        final WrappedDataWatcher.WrappedDataWatcherObject visible = new WrappedDataWatcher.WrappedDataWatcherObject(
-            0, WrappedDataWatcher.Registry.get(Byte.class));
+        final WrappedDataWatcherObject visible = new WrappedDataWatcherObject(
+            0, Registry.get(Byte.class));
         watcher.setObject(visible, (byte) 0x20);
       }
 
@@ -58,10 +62,12 @@ public final class ItemLine extends AbstractLine<ItemStack> {
           .write(0, entityID);
 
       if (VERSION > 9) {
-        final List<Pair<EnumWrappers.ItemSlot, ItemStack>> pairList = new ArrayList<>();
-        pairList.add(new Pair<>(EnumWrappers.ItemSlot.HEAD, line));
+        final List<Pair<EnumWrappers.ItemSlot, ItemStack>> pairList = Collections.singletonList(
+            new Pair<>(ItemSlot.HEAD, line));
 
-        packet.getSlotStackPairLists().write(0, pairList);
+        packet.getSlotStackPairLists()
+            .write(0, pairList);
+
         MANAGER.sendServerPacket(player, packet);
         return;
       }

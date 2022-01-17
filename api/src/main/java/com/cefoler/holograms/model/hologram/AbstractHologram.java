@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractHologram implements Hologram {
 
   protected final List<Line<?>> lines;
+
   private final Location location;
   private final List<Player> visiblePlayers;
 
@@ -49,12 +50,12 @@ public abstract class AbstractHologram implements Hologram {
     for (final Object line : lines) {
       final int lineId = count++;
       final double up = line instanceof ItemStack
-          ? 0.0D
+          ? 0.60D
           : 0.28D;
 
       if (line instanceof String) {
         final Line<?> textLine = new TextLine(visiblePlayers, lineId, (String) line, placeholders);
-        textLine.setLocation(hologramLocation.add(0.0, up, 0).clone());
+        textLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
 
         this.lines.add(textLine);
         return;
@@ -65,7 +66,7 @@ public abstract class AbstractHologram implements Hologram {
       }
 
       final Line<?> itemLine = new ItemLine(visiblePlayers, lineId, (ItemStack) line);
-      itemLine.setLocation(hologramLocation.add(0.0, 0.60D, 0).clone());
+      itemLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
 
       this.lines.add(itemLine);
     }

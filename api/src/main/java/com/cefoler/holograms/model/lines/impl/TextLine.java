@@ -1,5 +1,8 @@
 package com.cefoler.holograms.model.lines.impl;
 
+import static com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
+import static com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
+
 import com.cefoler.holograms.exception.HologramException;
 import com.cefoler.holograms.model.PlaceholderRegistry;
 import com.cefoler.holograms.model.lines.AbstractLine;
@@ -41,17 +44,18 @@ public final class TextLine extends AbstractLine<String> {
         return;
       }
 
-      final WrappedDataWatcher.WrappedDataWatcherObject visible = new WrappedDataWatcher.WrappedDataWatcherObject(
-          0, WrappedDataWatcher.Registry.get(Byte.class));
-      watcher.setObject(visible, (byte) 0x20);
+      final WrappedDataWatcherObject entityVisible = new WrappedDataWatcherObject(
+          0, Registry.get(Byte.class));
+      watcher.setObject(entityVisible, (byte) 0x20);
 
-      final WrappedDataWatcher.WrappedDataWatcherObject nameVisible = new WrappedDataWatcher.WrappedDataWatcherObject(
-          3, WrappedDataWatcher.Registry.get(Boolean.class));
+      final WrappedDataWatcherObject nameVisible = new WrappedDataWatcherObject(
+          3, Registry.get(Boolean.class));
       watcher.setObject(nameVisible, true);
 
-      packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-      MANAGER.sendServerPacket(player, packet);
+      packet.getWatchableCollectionModifier()
+          .write(0, watcher.getWatchableObjects());
 
+      MANAGER.sendServerPacket(player, packet);
       update(player);
     } catch (Exception exception) {
       throw new HologramException(
@@ -78,9 +82,8 @@ public final class TextLine extends AbstractLine<String> {
       final WrappedChatComponent chatComponent = WrappedChatComponent.fromChatMessage(
           placeholders.parse(line, player))[0];
 
-      final WrappedDataWatcher.WrappedDataWatcherObject chatComponentSerializer = new WrappedDataWatcher.WrappedDataWatcherObject(
-          2, WrappedDataWatcher.Registry.getChatComponentSerializer(true));
-
+      final WrappedDataWatcherObject chatComponentSerializer = new WrappedDataWatcherObject(
+          2, Registry.getChatComponentSerializer(true));
       watcher.setObject(chatComponentSerializer, chatComponent.getHandle());
 
       packet.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());

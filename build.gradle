@@ -1,6 +1,11 @@
+plugins {
+    id "org.sonarqube" version "3.3"
+}
+
 allprojects {
     apply plugin: "java"
     apply plugin: "maven-publish"
+    apply plugin: "org.sonarqube"
 
     group 'com.cefoler'
     version '1.0.0-SNAPSHOT'

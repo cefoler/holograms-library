@@ -39,7 +39,7 @@ public final class HologramCore implements HologramApi {
   }
 
   @Override
-  public void register(final Plugin plugin) {
+  public void register(final @NotNull Plugin plugin) {
     new HologramListener(plugin, this);
     controller.startHologramTick();
   }
@@ -54,7 +54,7 @@ public final class HologramCore implements HologramApi {
     controller.remove(hologram);
   }
 
-  public void handle(final Player player, final Hologram hologram) {
+  public void handle(final @NotNull Player player, final @NotNull Hologram hologram) {
     controller.handle(player, hologram);
   }
 

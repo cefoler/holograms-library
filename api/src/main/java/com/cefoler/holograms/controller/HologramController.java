@@ -34,22 +34,20 @@ public final class HologramController {
 
     final boolean isShown = hologram.isVisible(player);
 
-    final World hologramWorld = hologramLocation.getWorld();
+    final World world = hologramLocation.getWorld();
     final World playerWorld = player.getWorld();
 
-    if (hologramWorld != null && !hologramWorld.getName()
-        .equalsIgnoreCase(playerWorld.getName()) && isShown) {
+    if (world != null && !world.getName().equalsIgnoreCase(playerWorld.getName()) && isShown) {
       hologram.hide(player);
       return;
     }
 
-    if (hologramWorld != null && !hologramWorld.isChunkLoaded(
-        hologramLocation.getBlockX() >> 4, hologramLocation.getBlockZ() >> 4) && isShown) {
+    if (world != null && !world.isChunkLoaded(hologramLocation.getBlockX() >> 4,
+        hologramLocation.getBlockZ() >> 4) && isShown) {
       hologram.hide(player);
       return;
     }
 
-    // TODO: see how to optimize the distance squared method
     final boolean inRange = hologramLocation.distanceSquared(player.getLocation()) <= 5;
     if (!inRange && isShown) {
       hologram.hide(player);
