@@ -13,7 +13,7 @@ public interface Hologram {
 
   Location getLocation();
 
-  Line<?>[] getLines();
+  List<Line<?>> getLines();
 
   List<Player> getVisiblePlayers();
 
