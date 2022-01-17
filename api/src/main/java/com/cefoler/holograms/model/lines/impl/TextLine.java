@@ -7,21 +7,17 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher.WrappedDataWatcherObject;
 import java.util.Collection;
-import java.util.Optional;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class TextLine extends AbstractLine<String> {
 
   private final PlaceholderRegistry placeholders;
 
-  public TextLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin,
-      final int hologramId,
+  public TextLine(final @NotNull Collection<Player> seeingPlayers, final int hologramId,
       final @NotNull String obj, final @NotNull PlaceholderRegistry placeholderRegistry) {
-    super(seeingPlayers, plugin, hologramId, obj);
+    super(seeingPlayers, hologramId, obj);
     this.placeholders = placeholderRegistry;
   }
 

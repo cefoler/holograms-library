@@ -9,7 +9,6 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -26,7 +25,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractLine<T> implements Line<T>, Serializable {
+public abstract class AbstractLine<T> implements Line<T>{
 
   protected static final int VERSION;
   protected static final ProtocolManager MANAGER;
@@ -37,21 +36,22 @@ public abstract class AbstractLine<T> implements Line<T>, Serializable {
   }
 
   protected final int entityID;
-  private final Plugin plugin;
   private final Collection<Player> animationPlayers;
+
   @Setter
   protected Location location;
+
   @Getter
   @Setter
   protected T line;
+
   protected Optional<Animation> animation;
   private int taskID = -1;
 
   private WrappedDataWatcher defaultDataWatcher;
 
-  public AbstractLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin,
-      final int entityID, final @NotNull T line) {
-    this.plugin = plugin;
+  protected AbstractLine(final @NotNull Collection<Player> seeingPlayers, final int entityID,
+      final @NotNull T line) {
     this.entityID = entityID;
     this.line = line;
     this.animationPlayers = seeingPlayers;
@@ -61,8 +61,6 @@ public abstract class AbstractLine<T> implements Line<T>, Serializable {
       this.defaultDataWatcher = getDefaultWatcher(Bukkit.getWorlds().get(0));
     }
   }
-
-  public abstract void update(final @NotNull Player player);
 
   public void hide(final @NotNull Player player) {
     final PacketContainer destroyEntity = new PacketContainer(
@@ -121,7 +119,7 @@ public abstract class AbstractLine<T> implements Line<T>, Serializable {
     }
   }
 
-  public void setAnimation(final @NotNull AnimationType animationType) {
+  public void setAnimation(final Plugin plugin, final @NotNull AnimationType animationType) {
     final Animation abstractAnimation = animationType.getAnimation();
     this.animation = Optional.of(abstractAnimation);
 

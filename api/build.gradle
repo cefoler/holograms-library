@@ -1,3 +1,7 @@
+plugins {
+    id("org.sonarqube") version "3.0"
+}
+
 repositories {
     maven { url 'https://repo.dmulloy2.net/repository/public/' }
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }

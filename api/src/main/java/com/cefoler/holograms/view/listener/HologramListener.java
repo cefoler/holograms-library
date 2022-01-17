@@ -12,21 +12,11 @@ import org.jetbrains.annotations.NotNull;
 
 public final class HologramListener implements Listener {
 
-  private static boolean REGISTERED;
-
-  static {
-    REGISTERED = false;
-  }
-
   private final HologramCore factory;
 
   public HologramListener(final @NotNull Plugin plugin, final HologramCore hologramFactory) {
     this.factory = hologramFactory;
-
-    if (!REGISTERED) {
-      Bukkit.getPluginManager().registerEvents(this, plugin);
-      REGISTERED = true;
-    }
+    Bukkit.getPluginManager().registerEvents(this, plugin);
   }
 
   @EventHandler

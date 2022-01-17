@@ -12,14 +12,13 @@ import java.util.Collection;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class ItemLine extends AbstractLine<ItemStack> {
 
-  public ItemLine(final @NotNull Collection<Player> seeingPlayers, final @NotNull Plugin plugin,
+  public ItemLine(final @NotNull Collection<Player> seeingPlayers,
       final int entityID, final @NotNull ItemStack itemStack) {
-    super(seeingPlayers, plugin, entityID, itemStack);
+    super(seeingPlayers, entityID, itemStack);
   }
 
   @Override

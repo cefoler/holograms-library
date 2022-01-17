@@ -8,13 +8,11 @@ import com.cefoler.holograms.model.hologram.impl.StandardHologram;
 import com.cefoler.holograms.model.lines.Line;
 import com.cefoler.holograms.model.lines.impl.ItemLine;
 import com.cefoler.holograms.model.lines.impl.TextLine;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -25,13 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Getter
-public abstract class AbstractHologram implements Hologram, Serializable {
-
-  private static final ThreadLocalRandom RANDOM;
-
-  static {
-    RANDOM = ThreadLocalRandom.current();
-  }
+public abstract class AbstractHologram implements Hologram {
 
   protected final List<Line<?>> lines;
   private final Location location;
@@ -39,8 +31,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
 
   private final PlaceholderRegistry placeholders;
 
-  public AbstractHologram(
-      final @NotNull Plugin plugin,
+  protected AbstractHologram(
       final @NotNull Location location,
       final @Nullable PlaceholderRegistry placeholderRegistry,
       final @NotNull List<Player> visiblePlayers,
@@ -54,14 +45,15 @@ public abstract class AbstractHologram implements Hologram, Serializable {
 
     final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
 
+    int count = 0;
     for (final Object line : lines) {
+      final int lineId = count++;
       final double up = line instanceof ItemStack
           ? 0.0D
           : 0.28D;
 
       if (line instanceof String) {
-        final Line<?> textLine = new TextLine(visiblePlayers, plugin, RANDOM.nextInt(), (String) line,
-            this.placeholders);
+        final Line<?> textLine = new TextLine(visiblePlayers, lineId, (String) line, placeholders);
         textLine.setLocation(hologramLocation.add(0.0, up, 0).clone());
 
         this.lines.add(textLine);
@@ -72,7 +64,7 @@ public abstract class AbstractHologram implements Hologram, Serializable {
         return;
       }
 
-      final Line<?> itemLine = new ItemLine(visiblePlayers, plugin, RANDOM.nextInt(), (ItemStack) line);
+      final Line<?> itemLine = new ItemLine(visiblePlayers, lineId, (ItemStack) line);
       itemLine.setLocation(hologramLocation.add(0.0, 0.60D, 0).clone());
 
       this.lines.add(itemLine);
@@ -93,8 +85,8 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     visiblePlayers.forEach(line::update);
   }
 
-  public void setAnimation(final int index, final @NotNull AnimationType animationType) {
-    getLine(index).setAnimation(animationType);
+  public void setAnimation(final Plugin plugin, final int index, final @NotNull AnimationType animationType) {
+    getLine(index).setAnimation(plugin, animationType);
   }
 
   public void removeAnimation(final int index) {
@@ -135,9 +127,9 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     private final PlaceholderRegistry placeholderRegistry;
     private Location location;
 
-    {
-      lines = new LinkedList<>();
-      placeholderRegistry = new PlaceholderRegistry();
+    public Builder() {
+      this.lines = new LinkedList<>();
+      this.placeholderRegistry = new PlaceholderRegistry();
     }
 
     @NotNull
@@ -184,12 +176,12 @@ public abstract class AbstractHologram implements Hologram, Serializable {
     }
 
     @NotNull
-    public Hologram build(final Plugin plugin) {
+    public Hologram build() {
       if (location == null || lines.isEmpty()) {
         throw new HologramException("No location given or not completed");
       }
 
-      final Hologram hologram = new StandardHologram(plugin, location,
+      final Hologram hologram = new StandardHologram(location,
           placeholderRegistry, new ArrayList<>(), lines.toArray());
 
       HologramCore.getApi().registerHologram(hologram);

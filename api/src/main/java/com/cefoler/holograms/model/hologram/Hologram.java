@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public interface Hologram {
@@ -23,7 +24,7 @@ public interface Hologram {
 
   void setLine(final int index, final @NotNull String text);
 
-  void setAnimation(final int index, final @NotNull AnimationType animationType);
+  void setAnimation(final Plugin plugin, final int index, final @NotNull AnimationType animationType);
 
   void removeAnimation(final int index);
 

@@ -5,11 +5,10 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
+@Data
 public abstract class AbstractAnimation implements Animation, Serializable {
 
   protected static final ProtocolManager MANAGER;
@@ -18,13 +17,7 @@ public abstract class AbstractAnimation implements Animation, Serializable {
     MANAGER = ProtocolLibrary.getProtocolManager();
   }
 
-  @Getter
-  @Setter
   protected int entityId;
-
-  public abstract long getDelay();
-
-  public abstract void nextFrame(final @NotNull Player player);
 
   public void sendPacket(final Player player, final PacketContainer container) {
     try {

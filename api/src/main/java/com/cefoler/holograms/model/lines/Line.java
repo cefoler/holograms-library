@@ -3,6 +3,7 @@ package com.cefoler.holograms.model.lines;
 import com.cefoler.holograms.model.animation.type.AnimationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public interface Line<T> {
@@ -19,7 +20,7 @@ public interface Line<T> {
 
   void show(final @NotNull Player player);
 
-  void setAnimation(final @NotNull AnimationType animationType);
+  void setAnimation(final Plugin plugin, final @NotNull AnimationType animationType);
 
   void removeAnimation();
 
