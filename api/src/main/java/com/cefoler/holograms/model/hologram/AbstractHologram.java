@@ -54,10 +54,10 @@ public abstract class AbstractHologram implements Hologram {
     final Location hologramLocation = location.clone().add(0, 0.28, 0);
 
     double height = 0.0D;
-    int entityId = 10;
+    int entityId = -1;
 
     for (final Object line : linesObjects) {
-      entityId = entityId + 10;
+      entityId = entityId - 1;
 
       final double currentHeight = height;
       final double up = line instanceof ItemStack
