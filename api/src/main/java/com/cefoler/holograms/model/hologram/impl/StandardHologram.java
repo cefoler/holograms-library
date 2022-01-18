@@ -2,6 +2,7 @@ package com.cefoler.holograms.model.hologram.impl;
 
 import com.cefoler.holograms.model.PlaceholderRegistry;
 import com.cefoler.holograms.model.hologram.AbstractHologram;
+import java.util.LinkedList;
 import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ public final class StandardHologram extends AbstractHologram {
   public StandardHologram(final @NotNull Location location,
       final @Nullable PlaceholderRegistry placeholders,
       final @NotNull List<Player> seeingPlayers,
-      final @NotNull Object... lines) {
+      final @NotNull LinkedList<Object> lines) {
     super(location, placeholders, seeingPlayers, lines);
   }
 

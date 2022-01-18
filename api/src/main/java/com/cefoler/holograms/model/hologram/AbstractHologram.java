@@ -36,13 +36,13 @@ public abstract class AbstractHologram implements Hologram {
       final @NotNull Location location,
       final @Nullable PlaceholderRegistry placeholderRegistry,
       final @NotNull List<Player> visiblePlayers,
-      final @NotNull Object... linesObjects
+      final @NotNull LinkedList<Object> linesObjects
   ) {
     this.location = location;
     this.placeholders = placeholderRegistry
         == null ? new PlaceholderRegistry() : placeholderRegistry;
     this.visiblePlayers = visiblePlayers;
-    this.lines = new ArrayList<>(linesObjects.length);
+    this.lines = new ArrayList<>(linesObjects.size());
 
     final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
 
@@ -184,7 +184,7 @@ public abstract class AbstractHologram implements Hologram {
       }
 
       final Hologram hologram = new StandardHologram(location,
-          placeholderRegistry, new ArrayList<>(), lines.toArray());
+          placeholderRegistry, new ArrayList<>(), lines);
 
       HologramCore.getApi().registerHologram(hologram);
       return hologram;
