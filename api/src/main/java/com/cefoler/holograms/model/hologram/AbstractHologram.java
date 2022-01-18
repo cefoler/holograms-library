@@ -50,19 +50,25 @@ public abstract class AbstractHologram implements Hologram {
     this.lines = new ArrayList<>(linesObjects.size());
     this.range = range;
 
-    final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
+    final Location hologramLocation = location.clone().add(0, 0.28, 0);
 
+    double height = 0.0D;
     int entityId = 10;
+
     for (final Object line : linesObjects) {
       entityId = entityId + 10;
 
+      final double currentHeight = height;
       final double up = line instanceof ItemStack
-          ? 0.60D
-          : 0.28D;
+          ? 0.60D + currentHeight
+          : 0.28D + currentHeight;
 
+      height = up;
+
+      final Location lineLocation = hologramLocation.clone().subtract(0.0, up, 0);
       if (line instanceof String) {
         final Line<?> textLine = new TextLine(visiblePlayers, entityId, (String) line, placeholders);
-        textLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
+        textLine.setLocation(lineLocation);
 
         lines.add(textLine);
         continue;
@@ -73,7 +79,7 @@ public abstract class AbstractHologram implements Hologram {
       }
 
       final Line<?> itemLine = new ItemLine(visiblePlayers, entityId, (ItemStack) line);
-      itemLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
+      itemLine.setLocation(lineLocation);
 
       lines.add(itemLine);
     }
