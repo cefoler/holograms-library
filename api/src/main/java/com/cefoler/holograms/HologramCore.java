@@ -41,7 +41,7 @@ public final class HologramCore implements HologramApi {
   @Override
   public void register(final @NotNull Plugin plugin) {
     new HologramListener(plugin, this);
-    controller.startHologramTick();
+    controller.startTask();
   }
 
   @Override

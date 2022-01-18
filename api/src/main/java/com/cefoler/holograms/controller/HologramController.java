@@ -24,7 +24,7 @@ public final class HologramController {
     factory.getHolograms().remove(hologram);
   }
 
-  public void startHologramTick() {
+  public void startTask() {
     factory.getScheduled().scheduleAtFixedRate(() -> factory.getAsyncUpdateTask().call(), 1000, 100,
         TimeUnit.MILLISECONDS);
   }
