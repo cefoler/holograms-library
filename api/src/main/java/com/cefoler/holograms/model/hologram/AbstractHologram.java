@@ -59,11 +59,11 @@ public abstract class AbstractHologram implements Hologram {
         textLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
 
         lines.add(textLine);
-        return;
+        continue;
       }
 
       if (!(line instanceof ItemStack)) {
-        return;
+        continue;
       }
 
       final Line<?> itemLine = new ItemLine(visiblePlayers, entityId, (ItemStack) line);
