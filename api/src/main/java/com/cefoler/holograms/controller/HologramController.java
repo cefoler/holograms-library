@@ -48,7 +48,7 @@ public final class HologramController {
       return;
     }
 
-    final boolean inRange = hologramLocation.distanceSquared(player.getLocation()) <= 5;
+    final boolean inRange = hologramLocation.distanceSquared(player.getLocation()) <= 15;
     if (!inRange && isShown) {
       hologram.hide(player);
       return;
