@@ -27,4 +27,6 @@ public interface Line<T> {
 
   void removeAnimation();
 
+  boolean hasAnimation();
+
 }

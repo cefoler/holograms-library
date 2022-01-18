@@ -86,6 +86,7 @@ public abstract class AbstractHologram implements Hologram {
     }
   }
 
+  @Override
   public void setLine(final int index, final @NotNull ItemStack itemStack) {
     final Line<ItemStack> line = (ItemLine) getLine(index);
     line.setLine(itemStack);
@@ -93,6 +94,7 @@ public abstract class AbstractHologram implements Hologram {
     visiblePlayers.forEach(line::update);
   }
 
+  @Override
   public void setLine(final int index, final @NotNull String text) {
     final Line<String> line = (TextLine) getLine(index);
     line.setLine(text);
@@ -100,28 +102,34 @@ public abstract class AbstractHologram implements Hologram {
     visiblePlayers.forEach(line::update);
   }
 
+  @Override
   public void setAnimation(final Plugin plugin, final int index, final @NotNull AnimationType animationType) {
     getLine(index).setAnimation(plugin, animationType);
   }
 
+  @Override
   public void setAnimation(final Plugin plugin, final int index, final @NotNull Animation animation) {
     getLine(index).setAnimation(plugin, animation);
   }
 
+  @Override
   public void removeAnimation(final int index) {
     getLine(index).removeAnimation();
   }
 
+  @Override
   public void show(final @NotNull Player player) {
     visiblePlayers.add(player);
     lines.forEach(line -> line.show(player));
   }
 
+  @Override
   public void hide(final @NotNull Player player) {
     lines.forEach(line -> line.hide(player));
     visiblePlayers.remove(player);
   }
 
+  @Override
   public Line<?> getLine(final int index) {
     if (lines.size() < index) {
       throw new HologramException("Index is higher than the hologram size.");
@@ -130,6 +138,7 @@ public abstract class AbstractHologram implements Hologram {
     return lines.get(index);
   }
 
+  @Override
   public boolean isVisible(final @NotNull Player player) {
     return visiblePlayers.contains(player);
   }
