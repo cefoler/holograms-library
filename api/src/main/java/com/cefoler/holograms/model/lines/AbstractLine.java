@@ -124,14 +124,18 @@ public abstract class AbstractLine<T> implements Line<T>{
   }
 
   public void setAnimation(final Plugin plugin, final @NotNull AnimationType animationType) {
-    final Animation abstractAnimation = animationType.getAnimation();
-    this.animation = Optional.of(abstractAnimation);
+    setAnimation(plugin, animationType.getAnimation());
+  }
 
-    abstractAnimation.setEntityId(entityID);
+  public void setAnimation(final Plugin plugin, final @NotNull Animation animation) {
+    this.animation = Optional.of(animation);
+    animation.setEntityId(entityID);
 
+    // Sync update because of entity packet
     final BukkitTask task = Bukkit.getScheduler().runTaskTimer(plugin,
-        () -> this.animationPlayers.forEach(abstractAnimation::nextFrame),
-        abstractAnimation.getDelay(), abstractAnimation.getDelay());
+        () -> animationPlayers.forEach(animation::nextFrame),
+        animation.getDelay(), animation.getDelay());
+
     this.taskID = task.getTaskId();
   }
 

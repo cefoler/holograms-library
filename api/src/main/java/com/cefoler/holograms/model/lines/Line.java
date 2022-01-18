@@ -1,5 +1,6 @@
 package com.cefoler.holograms.model.lines;
 
+import com.cefoler.holograms.model.animation.Animation;
 import com.cefoler.holograms.model.animation.type.AnimationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -21,6 +22,8 @@ public interface Line<T> {
   void show(final @NotNull Player player);
 
   void setAnimation(final Plugin plugin, final @NotNull AnimationType animationType);
+
+  void setAnimation(final Plugin plugin, final @NotNull Animation animation);
 
   void removeAnimation();
 

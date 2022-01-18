@@ -3,6 +3,7 @@ package com.cefoler.holograms.model.hologram;
 import com.cefoler.holograms.exception.HologramException;
 import com.cefoler.holograms.HologramCore;
 import com.cefoler.holograms.model.PlaceholderRegistry;
+import com.cefoler.holograms.model.animation.Animation;
 import com.cefoler.holograms.model.animation.type.AnimationType;
 import com.cefoler.holograms.model.hologram.impl.StandardHologram;
 import com.cefoler.holograms.model.lines.Line;
@@ -103,27 +104,30 @@ public abstract class AbstractHologram implements Hologram {
     getLine(index).setAnimation(plugin, animationType);
   }
 
+  public void setAnimation(final Plugin plugin, final int index, final @NotNull Animation animation) {
+    getLine(index).setAnimation(plugin, animation);
+  }
+
   public void removeAnimation(final int index) {
     getLine(index).removeAnimation();
   }
 
   public void show(final @NotNull Player player) {
     visiblePlayers.add(player);
-    for (final Line<?> line : lines) {
-      line.show(player);
-    }
+    lines.forEach(line -> line.show(player));
   }
 
   public void hide(final @NotNull Player player) {
-    for (final Line<?> line : lines) {
-      line.hide(player);
-    }
-
+    lines.forEach(line -> line.hide(player));
     visiblePlayers.remove(player);
   }
 
   public Line<?> getLine(final int index) {
-    return lines.get(Math.abs(index - lines.size() + 1));
+    if (lines.size() < index) {
+      throw new HologramException("Index is higher than the hologram size.");
+    }
+
+    return lines.get(index);
   }
 
   public boolean isVisible(final @NotNull Player player) {
@@ -201,7 +205,7 @@ public abstract class AbstractHologram implements Hologram {
     @NotNull
     public Hologram build() {
       if (location == null || lines.isEmpty()) {
-        throw new HologramException("No location given or not completed");
+        throw new HologramException("No location was given in the builder. Cancelling Hologram creation.");
       }
 
       final Hologram hologram = new StandardHologram(location,
