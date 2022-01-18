@@ -67,11 +67,15 @@ public abstract class AbstractLine<T> implements Line<T>{
         PacketType.Play.Server.ENTITY_DESTROY);
     try {
       if (VERSION < 9) {
-        destroyEntity.getIntegerArrays().write(0, new int[]{entityID});
+        destroyEntity.getIntegerArrays()
+            .write(0, new int[]{entityID});
         MANAGER.sendServerPacket(player, destroyEntity);
+        return;
       }
 
-      destroyEntity.getIntLists().write(0, Collections.singletonList(entityID));
+      destroyEntity.getIntLists()
+          .write(0, Collections.singletonList(entityID));
+
       MANAGER.sendServerPacket(player, destroyEntity);
     } catch (Exception exception) {
       throw new HologramException(
