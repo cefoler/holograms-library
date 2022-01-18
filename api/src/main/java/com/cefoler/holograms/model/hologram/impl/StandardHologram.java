@@ -14,8 +14,8 @@ public final class StandardHologram extends AbstractHologram {
   public StandardHologram(final @NotNull Location location,
       final @Nullable PlaceholderRegistry placeholders,
       final @NotNull List<Player> seeingPlayers,
-      final @NotNull LinkedList<Object> lines) {
-    super(location, placeholders, seeingPlayers, lines);
+      final @NotNull LinkedList<Object> lines, final int range) {
+    super(location, placeholders, seeingPlayers, lines, range);
   }
 
 }

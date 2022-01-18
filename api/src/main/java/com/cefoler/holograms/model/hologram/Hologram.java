@@ -12,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Hologram {
 
+  void setRange(final int range);
+
+  int getRange();
+
   Location getLocation();
 
   List<Line<?>> getLines();

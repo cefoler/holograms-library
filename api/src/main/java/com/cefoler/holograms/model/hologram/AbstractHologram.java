@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,17 +33,22 @@ public abstract class AbstractHologram implements Hologram {
 
   private final PlaceholderRegistry placeholders;
 
+  @Setter
+  private int range;
+
   protected AbstractHologram(
       final @NotNull Location location,
       final @Nullable PlaceholderRegistry placeholderRegistry,
       final @NotNull List<Player> visiblePlayers,
-      final @NotNull LinkedList<Object> linesObjects
+      final @NotNull LinkedList<Object> linesObjects,
+      final int range
   ) {
     this.location = location;
     this.placeholders = placeholderRegistry
         == null ? new PlaceholderRegistry() : placeholderRegistry;
     this.visiblePlayers = visiblePlayers;
     this.lines = new ArrayList<>(linesObjects.size());
+    this.range = range;
 
     final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
 
@@ -127,11 +133,14 @@ public abstract class AbstractHologram implements Hologram {
 
     private final LinkedList<Object> lines;
     private final PlaceholderRegistry placeholderRegistry;
+
     private Location location;
+    private int range;
 
     public Builder() {
       this.lines = new LinkedList<>();
       this.placeholderRegistry = new PlaceholderRegistry();
+      this.range = 50;
     }
 
     @NotNull
@@ -155,6 +164,12 @@ public abstract class AbstractHologram implements Hologram {
     @NotNull
     public Builder addLines(final @NotNull ItemStack... items) {
       lines.addAll(Arrays.asList(items));
+      return this;
+    }
+
+    @NotNull
+    public Builder range(final int range) {
+      this.range = range;
       return this;
     }
 
@@ -184,7 +199,7 @@ public abstract class AbstractHologram implements Hologram {
       }
 
       final Hologram hologram = new StandardHologram(location,
-          placeholderRegistry, new ArrayList<>(), lines);
+          placeholderRegistry, new ArrayList<>(), lines, range);
 
       HologramCore.getApi().registerHologram(hologram);
       return hologram;
