@@ -30,25 +30,26 @@ public final class HologramController {
   }
 
   public void handle(final Player player, final Hologram hologram) {
-    final Location hologramLocation = hologram.getLocation();
+    final Location location = hologram.getLocation();
 
     final boolean isShown = hologram.isVisible(player);
 
-    final World world = hologramLocation.getWorld();
+    final World world = location.getWorld();
     final World playerWorld = player.getWorld();
 
-    if (world != null && !world.getName().equalsIgnoreCase(playerWorld.getName()) && isShown) {
-      hologram.hide(player);
-      return;
+    if (world != null && isShown) {
+      if (!world.getName().equalsIgnoreCase(playerWorld.getName())) {
+        hologram.hide(player);
+        return;
+      }
+
+      if (!world.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+        hologram.hide(player);
+        return;
+      }
     }
 
-    if (world != null && !world.isChunkLoaded(hologramLocation.getBlockX() >> 4,
-        hologramLocation.getBlockZ() >> 4) && isShown) {
-      hologram.hide(player);
-      return;
-    }
-
-    final boolean inRange = hologramLocation.distanceSquared(player.getLocation()) <= 15;
+    final boolean inRange = location.distanceSquared(player.getLocation()) <= 15;
     if (!inRange && isShown) {
       hologram.hide(player);
       return;

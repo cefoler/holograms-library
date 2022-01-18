@@ -36,28 +36,28 @@ public abstract class AbstractHologram implements Hologram {
       final @NotNull Location location,
       final @Nullable PlaceholderRegistry placeholderRegistry,
       final @NotNull List<Player> visiblePlayers,
-      final @NotNull Object... lines
+      final @NotNull Object... linesObjects
   ) {
     this.location = location;
     this.placeholders = placeholderRegistry
         == null ? new PlaceholderRegistry() : placeholderRegistry;
     this.visiblePlayers = visiblePlayers;
-    this.lines = new ArrayList<>(lines.length);
+    this.lines = new ArrayList<>(linesObjects.length);
 
     final Location hologramLocation = location.clone().subtract(0, 0.28, 0);
 
     int count = 0;
-    for (final Object line : lines) {
-      final int lineId = count++;
+    for (final Object line : linesObjects) {
+      count++;
       final double up = line instanceof ItemStack
           ? 0.60D
           : 0.28D;
 
       if (line instanceof String) {
-        final Line<?> textLine = new TextLine(visiblePlayers, lineId, (String) line, placeholders);
+        final Line<?> textLine = new TextLine(visiblePlayers, count, (String) line, placeholders);
         textLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
 
-        this.lines.add(textLine);
+        lines.add(count, textLine);
         return;
       }
 
@@ -65,10 +65,10 @@ public abstract class AbstractHologram implements Hologram {
         return;
       }
 
-      final Line<?> itemLine = new ItemLine(visiblePlayers, lineId, (ItemStack) line);
+      final Line<?> itemLine = new ItemLine(visiblePlayers, count, (ItemStack) line);
       itemLine.setLocation(hologramLocation.clone().add(0.0, up, 0));
 
-      this.lines.add(itemLine);
+      lines.add(count, itemLine);
     }
   }
 
