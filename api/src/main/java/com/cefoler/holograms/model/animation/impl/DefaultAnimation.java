@@ -1,18 +1,31 @@
 package com.cefoler.holograms.model.animation.impl;
 
 import com.cefoler.holograms.model.animation.AbstractAnimation;
+import com.cefoler.holograms.model.hologram.Hologram;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
+import java.util.function.Function;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public final class CircleAnimation extends AbstractAnimation {
+@Data
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public final class DefaultAnimation extends AbstractAnimation {
 
-  private float yaw;
+  private float defaultYaw;
+  private final float yaw;
+
+  private final int delay;
+
+  private final Runnable runnable;
 
   @Override
   public void nextFrame(final @NotNull Player player) {
-    this.yaw += 10L;
+    defaultYaw = defaultYaw + yaw;
     final PacketContainer container = new PacketContainer(PacketType.Play.Server.ENTITY_LOOK);
 
     container.getIntegers()
@@ -26,11 +39,15 @@ public final class CircleAnimation extends AbstractAnimation {
         .write(0, true);
 
     sendPacket(player, container);
+
+    if (runnable != null) {
+      runnable.run();
+    }
   }
 
   @Override
   public long getDelay() {
-    return 2;
+    return delay;
   }
 
   private int getCompressedAngle(final float value) {

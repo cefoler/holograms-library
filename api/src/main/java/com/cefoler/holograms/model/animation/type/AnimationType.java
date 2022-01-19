@@ -1,7 +1,7 @@
 package com.cefoler.holograms.model.animation.type;
 
+import com.cefoler.holograms.model.animation.AbstractAnimation;
 import com.cefoler.holograms.model.animation.Animation;
-import com.cefoler.holograms.model.animation.impl.CircleAnimation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,7 +9,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AnimationType {
 
-  CIRCLE(new CircleAnimation());
+  CIRCLE(AbstractAnimation.builder()
+      .defaultYaw(0)
+      .yawRate(10)
+      .delay(2)
+      .build());
 
   private final Animation animation;
 
